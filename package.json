@@ -8,7 +8,7 @@
     "dev": "vite --host 127.0.0.1",
     "dev:internal": "vite --mode internal --host 127.0.0.1 --port 5181",
     "build:internal": "tsc -b && vite build --mode internal --outDir .tools/internal-dist",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/build-server.mjs && tsc -b && vite build",
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "test": "node scripts/test.mjs",
