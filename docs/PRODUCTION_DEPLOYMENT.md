@@ -8,7 +8,9 @@ Use the existing repository `JustHouse011/Floating-Bakery`, branch `main`. Frame
 
 Authenticate Vercel through the connected plugin or `vercel login`, link the intended project, then deploy with `vercel deploy --target preview`. Check that Vercel reports the Preview environment before publishing. Do not use anonymous `--temporary`: the tested CLI only supports production for anonymous deployments. Do not use `--prod` or change DNS for this review.
 
-Vercel documents that a new project's first deployment is classified as Production. Do not assume an explicit Preview flag overrides this. The new `floating-bakery` project has no deployments yet; the owner must approve a separate empty initialization page with `--skip-domain` before that Production-labelled setup can occur. The actual bakery website must remain Preview-only. No initialization or website deployment has been performed while that approval is pending.
+Vercel documents that a new project's first deployment is classified as Production. Do not assume an explicit Preview flag overrides this. The owner has expressly prohibited an empty Production placeholder, so the new `floating-bakery` project must stay undeployed until a supported Preview-only initialization path is available. A proposed Production-blocking API policy was rejected as unavailable on this Hobby account. Deploying a Preview under an already-initialized project requires the owner's explicit choice; no existing project's Production or Git connection may be changed as part of that workaround.
+
+Automatic Git deployments are disabled by `git.deploymentEnabled:false` during review. Approved commits can still be pushed to GitHub, and manual Preview deployment remains the intended workflow.
 
 No email credentials are required for a review-only preview. Leave `ENQUIRY_ENABLED=false` and the sender empty. `/api/status` returns `enabled:false`; contact, product enquiry and quotation submissions are visibly unavailable with direct email/phone alternatives. The site never silently saves a customer submission locally. Preparing a design or filling in a form is not delivery.
 
