@@ -8,6 +8,8 @@ Use the existing repository `JustHouse011/Floating-Bakery`, branch `main`. Frame
 
 Authenticate Vercel through the connected plugin or `vercel login`, link the intended project, then deploy with `vercel deploy --target preview`. Check that Vercel reports the Preview environment before publishing. Do not use anonymous `--temporary`: the tested CLI only supports production for anonymous deployments. Do not use `--prod` or change DNS for this review.
 
+Vercel documents that a new project's first deployment is classified as Production. Do not assume an explicit Preview flag overrides this. The new `floating-bakery` project has no deployments yet; the owner must approve a separate empty initialization page with `--skip-domain` before that Production-labelled setup can occur. The actual bakery website must remain Preview-only. No initialization or website deployment has been performed while that approval is pending.
+
 No email credentials are required for a review-only preview. Leave `ENQUIRY_ENABLED=false` and the sender empty. `/api/status` returns `enabled:false`; contact, product enquiry and quotation submissions are visibly unavailable with direct email/phone alternatives. The site never silently saves a customer submission locally. Preparing a design or filling in a form is not delivery.
 
 Preview pages are noindex and omit canonical URLs. `PUBLIC_SITE_URL` is intentionally empty until the bakery confirms its production domain. Preview builds explicitly ignore that variable even if inherited. A confirmed HTTPS production URL enables canonical metadata, crawlable sitemap URLs and robots rules. Product pages have build-generated metadata in addition to client navigation updates.

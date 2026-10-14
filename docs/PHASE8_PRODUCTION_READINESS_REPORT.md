@@ -34,7 +34,8 @@ During copy cleanup, a replacement script damaged seven components. They were re
 | Dependency audit | 0 known vulnerabilities across 328 audited dependencies |
 | Public bundle scan | No IndexedDB/customer-repository or admin-shell code after aliases |
 | Local unconfigured API | `/api/status` returned `enabled:false` |
-| Live inbox delivery / live Preview APIs | Not tested: missing configuration and Vercel login |
+| Vercel Preview build / serverless packaging | Passed after browser sign-in; all four functions use Node 22 |
+| Live inbox delivery / live Preview APIs | Not tested: email configuration absent; deployment awaiting setup decision and GitHub sign-in |
 
 The lazy-loaded Three.js studio still produces a build warning for its approximately 903 KB uncompressed graphics chunk; this is an existing graphics cost, loaded only for the studio. Browser tests use installed Chrome on desktop/mobile viewports; physical-device and live host tests remain outstanding.
 
@@ -45,3 +46,11 @@ Confirmed repository: `https://github.com/JustHouse011/Floating-Bakery`, default
 Vercel CLI 64.0.2 reported **No existing credentials found**. The authenticated Preview attempt did not create a deployment. An explicit temporary Preview attempt was rejected because anonymous deployments always target production; no production fallback was performed. **Preview URL: unavailable until Vercel is authenticated.**
 
 Release blockers for production: approved verified Resend sender/domain/API credential, HMAC/Redis/origin configuration, successful real contact and quotation inbox tests, authenticated Vercel Preview and live route/API checks, and confirmed production-domain ownership. These do not block preparing a disabled-submission review preview once account access is available. Do not enter API keys into chat or commit `.env` files.
+
+## Local CLI authentication follow-up
+
+Vercel browser authentication succeeded for `bongz011`. Created and linked the dedicated `floating-bakery` project in `bongz011s-projects`. Its authenticated Preview build completed successfully, producing `contact`, `product`, `quotation` and `status` Node 22 functions. Credentials and downloaded environment files remain ignored and were not displayed or committed. npm normalized only the Node engine field's formatting in the lockfile; dependency versions did not change.
+
+GitHub CLI device authentication is awaiting owner approval. The original credential-manager device flow stalled and was stopped before starting the GitHub CLI alternative. No push has succeeded yet.
+
+No Vercel deployment has been created. Vercel's [first-deployment behaviour](https://vercel.com/docs/cli/deploy#prod) means an empty new project's initial deployment may be labelled Production despite a Preview request. An empty initialization page is prepared under ignored `.tools/preview-bootstrap`; owner approval is required before deploying this Production-labelled placeholder with domain assignment skipped. The actual bakery website remains Preview-only. The existing `gugu` Vercel project is a separate Dinner Under the Stars site and has not been changed.
