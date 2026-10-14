@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import {
-  CakeSlice,
   LayoutDashboard,
   Package,
   SlidersHorizontal,
@@ -103,9 +102,7 @@ export default function Admin() {
             to="/admin"
             onClick={() => setMobile(false)}
           >
-            <span className="admin-brand-mark">
-              <CakeSlice size={24} />
-            </span>
+            <img className="admin-brand-logo" src="/Logo.svg" width={60} height={60} alt="Floating Bakery & Caterers" />
             <span>
               Floating Bakery<small>ADMINISTRATION</small>
             </span>

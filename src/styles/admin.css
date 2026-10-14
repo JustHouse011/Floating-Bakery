@@ -91,14 +91,11 @@
   letter-spacing: 1.5px;
   margin-top: 5px;
 }
-.admin-brand-mark {
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  width: 43px;
-  height: 43px;
-  background: #933f55;
-  color: white;
+.admin-brand-logo {
+  display: block;
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
   flex-shrink: 0;
 }
 .admin-nav-label {
