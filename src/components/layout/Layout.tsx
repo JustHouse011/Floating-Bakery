@@ -40,7 +40,7 @@ export default function Layout() {
       </div>
       <header className="site-header">
         <Link to="/" className="brand site-logo" onClick={close}>
-          <img className="official-brand-logo" src="/images/catalogue/official-logo.webp" width={287} height={266} alt="Floating Bakery & Caterers" />
+          <img className="official-brand-logo" src="/Logo.svg" width={600} height={600} alt="Floating Bakery & Caterers" />
         </Link>
         <button
           className="menu-toggle"

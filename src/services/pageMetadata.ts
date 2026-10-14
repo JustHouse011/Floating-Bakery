@@ -16,7 +16,7 @@ export function pageMetadata(path:string,siteURL='',previewURL='') {
   let origin='';try{const url=new URL(siteURL);if(url.protocol==='https:')origin=url.origin;}catch{/* No confirmed production domain. */}
   let imageOrigin=origin;try{const url=new URL(previewURL);if(!imageOrigin&&['https:','http:'].includes(url.protocol))imageOrigin=url.origin;}catch{/* The deployment origin is optional for local static builds. */}
   const indexable=Boolean(origin)&&(Boolean(product)||['/','/cakes','/about','/catering','/contact'].includes(path));
-  const image=product?.responsiveImages?.detail||product?.image||'/images/catalogue/official-logo.webp';
+  const image=product?.responsiveImages?.detail||product?.image||'/Logo.svg';
   const structuredData={ '@context':'https://schema.org','@type':'Bakery',name:brand,founder:{'@type':'Person',name:'Chef Gugu'},telephone:'+27731268382',email:'guguminnaar@gmail.com',address:{'@type':'PostalAddress',streetAddress:'Thatchfield Crescent Estate, Thatchfield, The Reeds',addressLocality:'Centurion',postalCode:'0158',addressCountry:'ZA'},...(origin?{url:origin,image:origin+image}:{})};
   return {title:`${title} | ${brand}`,description,image:imageOrigin?imageOrigin+image:image,canonical:indexable?origin+path:'',robots:indexable?'index, follow':'noindex, nofollow',structuredData};
 }

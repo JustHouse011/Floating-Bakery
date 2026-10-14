@@ -12,7 +12,7 @@ export default function SiteFooter() {
   return <footer className="site-footer">
     <div className="site-footer-grid">
       <div className="footer-brand-column">
-        <Link to="/" className="brand footer-logo"><img className="official-brand-logo" src="/images/catalogue/official-logo.webp" alt="Floating Bakery & Caterers" /></Link>
+        <Link to="/" className="brand footer-logo"><img className="official-brand-logo" src="/Logo.svg" alt="Floating Bakery & Caterers" /></Link>
         <h2>Floating Bakery &amp; Caterers</h2>
         <p className="footer-tagline">Freshness in Every Bite.</p>
         <p>Beautifully crafted cakes, exquisite desserts and bespoke catering for life's most memorable celebrations.</p>
