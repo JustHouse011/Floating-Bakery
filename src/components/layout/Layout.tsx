@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useDrawerFocus } from "../../hooks/useDrawerFocus";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import PublicInteractions from './PublicInteractions';
+import PearlBackground from './PearlBackground';
 import { Menu, X } from "lucide-react";
 import SiteFooter from './SiteFooter';
 import '../../styles/navigation-footer.css';
@@ -30,6 +31,7 @@ export default function Layout() {
   }, []);
   return (
     <div className="public-site">
+      <PearlBackground />
       <PublicInteractions />
       <a className="skip-link" href="#main">
         Skip to content
