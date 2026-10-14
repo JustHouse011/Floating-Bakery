@@ -1,4 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Product } from "../../types";
 import { formatRand } from "../../utils/currency";
@@ -11,9 +10,6 @@ export default function ProductCard({ product }: { product: Product; enquiry?: b
     <article className={`product-card ${product.kind === 'catalogue' ? 'catalogue-product' : product.kind === 'official-cake' ? 'official-cake-product' : ''}`}>
       <Link to={`/cakes/${product.id}`} className="product-image">
         <ProductPhoto src={product.responsiveImages?.thumbnail || product.image} srcSet={product.responsiveImages?.srcSet} sizes="(max-width: 560px) 92vw, (max-width: 1024px) 45vw, 30vw" alt={product.name} />
-        {product.kind !== 'official-cake' && <span>
-          View product <ArrowUpRight size={16} />
-        </span>}
       </Link>
       <div className="product-meta">
         <span>{catalogueCategory(product)}</span>
