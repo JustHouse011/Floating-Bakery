@@ -53,6 +53,7 @@ export async function gpuState(page) {
     const url = performance
       .getEntriesByType("resource")
       .find((r) => r.name.includes("/@react-three_fiber.js"))?.name;
+    if (!url) return { calls: 0, triangles: 0 };
     const fiber = await import(url);
     const root=fiber._roots.get(document.querySelector("canvas"));
     // Canvas visibility can precede creation of the Fiber root by one frame.

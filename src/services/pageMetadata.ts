@@ -12,7 +12,7 @@ export function pageMetadata(path:string,siteURL='',previewURL='') {
     '/request-received':['Your Enquiry','Review the acceptance status of your Floating Bakery & Caterers enquiry.'],
   };
   const product=path.startsWith('/cakes/')?publicProducts.find(p=>p.id===decodeURIComponent(path.slice(7))||p.slug===decodeURIComponent(path.slice(7))):undefined;
-  const [title,description]=product?[product.name,`${product.description} Explore this ${product.category.toLowerCase()} design from Floating Bakery & Caterers. Final pricing and availability require confirmation.`]:pages[path]||['Page Unavailable','Return to the Floating Bakery & Caterers collection.'];
+  const [title,description]=path.startsWith('/admin')?['Bakery Administration','Authorised access to Floating Bakery & Caterers administration.']:product?[product.name,`${product.description} Explore this ${product.category.toLowerCase()} design from Floating Bakery & Caterers. Final pricing and availability require confirmation.`]:pages[path]||['Page Unavailable','Return to the Floating Bakery & Caterers collection.'];
   let origin='';try{const url=new URL(siteURL);if(url.protocol==='https:')origin=url.origin;}catch{/* No confirmed production domain. */}
   let imageOrigin=origin;try{const url=new URL(previewURL);if(!imageOrigin&&['https:','http:'].includes(url.protocol))imageOrigin=url.origin;}catch{/* The deployment origin is optional for local static builds. */}
   const indexable=Boolean(origin)&&(Boolean(product)||['/','/cakes','/about','/catering','/contact'].includes(path));

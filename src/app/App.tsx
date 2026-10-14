@@ -14,6 +14,7 @@ import ProductEnquiry, { ProductEnquiryConfirmation } from '../pages/Quotation/P
 import { useStore } from "zustand";
 import { adminStore, initializeWorkspace } from "../store/adminStore";
 const Admin = lazy(() => import("../pages/Admin/Admin"));
+const AdminFoundation = lazy(() => import('../pages/Admin/AdminFoundation'));
 const CakeDesigner = lazy(() => import("../pages/CakeDesigner/CakeDesigner"));
 const QuotationRequest = lazy(
   () => import("../pages/Quotation/QuotationRequest"),
@@ -72,14 +73,14 @@ export default function App() {
         <Route
           path="admin/*"
           element={
-            IS_PUBLIC_SITE ? <Unavailable/> : <Suspense
+            <Suspense
               fallback={
                 <main className="section" role="status">
                   Loading administration…
                 </main>
               }
             >
-              <Admin />
+              {IS_PUBLIC_SITE ? <AdminFoundation /> : <Admin />}
             </Suspense>
           }
         />

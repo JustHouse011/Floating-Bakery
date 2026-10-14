@@ -3,7 +3,9 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "engines": {"node": "22.x"},
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "dev:internal": "vite --mode internal --host 127.0.0.1 --port 5181",
@@ -13,6 +15,11 @@
     "lint": "eslint .",
     "test": "node scripts/test.mjs",
     "test:delivery": "node scripts/test-delivery.mjs",
+    "test:foundation": "node scripts/test-foundation.mjs",
+    "test:database": "node scripts/test-database.mjs",
+    "test:foundation-browser": "playwright test e2e/foundation.spec.mjs --project=journey-desktop --project=journey-mobile",
+    "check:browser-secrets": "node scripts/check-browser-secrets.mjs",
+    "predev": "node scripts/build-server.mjs",
     "test:production-browser": "playwright test e2e/production.spec.mjs --project=journey-desktop --project=journey-mobile",
     "test:browser": "playwright test",
     "qa:audit": "node scripts/qa-audit.mjs",
@@ -22,6 +29,7 @@
   "dependencies": {
     "@react-three/drei": "^10.0.0",
     "@react-three/fiber": "^9.0.0",
+    "@supabase/supabase-js": "^2.117.3",
     "framer-motion": "^12.0.0",
     "lucide-react": "^0.468.0",
     "react": "^19.0.0",
@@ -31,6 +39,7 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.9",
     "@eslint/js": "^9.0.0",
     "@playwright/test": "^1.64.0",
     "@tailwindcss/vite": "^4.0.0",

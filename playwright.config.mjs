@@ -74,12 +74,12 @@ export default defineConfig({
     },
     {
       name: "journey-desktop",
-      testMatch: ["workflow.spec.mjs", "gpu.spec.mjs", "catalogue.spec.mjs", "officialCake.spec.mjs", "officialCakeAdmin.spec.mjs", "quotationCtas.spec.mjs", "studio.spec.mjs", "production.spec.mjs"],
+      testMatch: ["workflow.spec.mjs", "gpu.spec.mjs", "catalogue.spec.mjs", "officialCake.spec.mjs", "officialCakeAdmin.spec.mjs", "quotationCtas.spec.mjs", "studio.spec.mjs", "production.spec.mjs", "foundation.spec.mjs"],
       use: { viewport: { width: 1440, height: 900 } },
     },
     {
       name: "journey-mobile",
-      testMatch: ["workflow.spec.mjs", "gpu.spec.mjs", "catalogue.spec.mjs", "officialCake.spec.mjs", "officialCakeAdmin.spec.mjs", "quotationCtas.spec.mjs", "studio.spec.mjs", "production.spec.mjs"],
+      testMatch: ["workflow.spec.mjs", "gpu.spec.mjs", "catalogue.spec.mjs", "officialCake.spec.mjs", "officialCakeAdmin.spec.mjs", "quotationCtas.spec.mjs", "studio.spec.mjs", "production.spec.mjs", "foundation.spec.mjs"],
       use: { viewport: { width: 390, height: 844 }, hasTouch: true },
     },
   ],

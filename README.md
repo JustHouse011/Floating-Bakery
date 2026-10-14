@@ -1,5 +1,7 @@
 # Floating Bakery & Caterers
 
+Stage 9A backend foundations are prepared for review. See [architecture audit](docs/PHASE9A_ARCHITECTURE_AUDIT.md), [review report](docs/PHASE9A_REVIEW_REPORT.md) and [setup instructions](docs/PHASE9A_SETUP.md). Supabase migrations remain unapplied, administration is disabled until configured, and database-backed dashboard integration begins only after Stage 9A approval.
+
 Customer storefront, official product catalogue and advanced 3D cake studio. The public build uses Vercel API functions and configurable Resend email delivery. Online submissions remain unavailable until the sender and service are configured and tested. Historical browser-local administration is available only through the separate internal mode. See [production deployment instructions](docs/PRODUCTION_DEPLOYMENT.md).
 
 ## Run locally
