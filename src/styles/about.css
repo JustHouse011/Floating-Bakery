@@ -1,0 +1,36 @@
+.about-hero { text-align: center; padding-top: 90px; padding-bottom: 65px; background: var(--cream); }
+.about-hero h1 { font-size: clamp(46px, 6vw, 86px); line-height: 1.06; margin: 22px auto; }
+.about-hero p { max-width: 620px; margin: 0 auto; }
+.about-divider { display: block; width: 64px; height: 1px; background: var(--gold); margin: 34px auto 0; }
+.about-story, .about-founder { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(32px, 6vw, 90px); align-items: center; }
+.about-page h2 { font-size: clamp(36px, 4vw, 58px); line-height: 1.12; }
+.about-prose p { line-height: 1.85; }
+.about-prose p:last-child { margin-bottom: 0; }
+.about-founder { background: var(--cream); }
+.founder-portrait { margin: 0; max-width: 390px; width: 100%; justify-self: center; }
+.founder-portrait img { display: block; width: 100%; height: auto; aspect-ratio: 826/1600; border-radius: 180px 180px 8px 8px; }
+.founder-portrait figcaption { font-size: 12px; text-align: center; padding-top: 16px; color: var(--muted); }
+.founder-role { color: var(--accent); font-weight: 500; }
+.founder-experience { border-top: 1px solid #bca99b; padding-top: 22px; font-size: 14px; }
+.about-philosophy, .about-location { text-align: center; }
+.about-philosophy .about-prose, .about-location > p { max-width: 720px; margin-left: auto; margin-right: auto; }
+.about-values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 44px; border-top: 1px solid #bca99b; padding-top: 30px; }
+.about-values dt { font-family: var(--serif); font-size: 30px; }
+.about-values dd { margin: 12px 0 0; font-size: 14px; line-height: 1.8; }
+.about-location { background: var(--cream); }
+.about-cta h2 { max-width: 800px; margin-left: auto; margin-right: auto; }
+.about-cta p { max-width: 650px; margin-left: auto; margin-right: auto; }
+.about-cta .actions { justify-content: center; }
+.home-founder h2 { max-width: 720px; margin-left: auto; margin-right: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .about-hero > *, .about-founder > * { animation: about-enter 650ms ease-out both; }
+  @keyframes about-enter { from { opacity: .85; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+}
+@media (max-width: 760px) {
+  .about-hero { padding-top: 55px; padding-bottom: 45px; }
+  .about-hero h1 { min-height: 4.24em; }
+  .about-story, .about-founder { grid-template-columns: 1fr; gap: 30px; }
+  .founder-portrait { max-width: 340px; }
+  .about-values { grid-template-columns: 1fr; gap: 24px; }
+  .about-cta .actions { flex-direction: column; }
+}

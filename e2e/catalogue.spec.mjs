@@ -1,0 +1,75 @@
+import { test, expect } from '@playwright/test';
+import axe from 'axe-core';
+import { open, capture } from './helpers.mjs';
+
+test('official catalogue search, categories, actual photos and quantity prices', async ({ page }, info) => {
+  await open(page, '/cakes');
+  await expect(page.locator('.product-card')).toHaveCount(61);
+  await page.getByRole('button', { name: 'Scones', exact: true }).click();
+  await expect(page.locator('.product-card')).toHaveCount(3);
+  await page.getByRole('searchbox', { name: 'Search products' }).fill('chocolate');
+  await expect(page.locator('.product-card')).toHaveCount(1);
+  await page.getByRole('searchbox', { name: 'Search products' }).fill('');
+  await page.getByRole('link', { name: 'Raisin Scones', exact: true }).click();
+  await expect(page.getByText('Plain scone menu photograph reused', { exact: false })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Request Quote', exact: true })).toBeDisabled();
+  await page.getByRole('combobox', { name: 'Quantity', exact: true }).selectOption('20');
+  await expect(page.locator('.detail-price')).toContainText(/1[\s,]100/);
+  await page.getByRole('combobox', { name: 'Quantity', exact: true }).selectOption('5');
+  await expect(page.locator('.detail-price')).toContainText('380');
+  await expect(page.getByRole('link', { name: /Customise/ })).toHaveCount(0);
+  await capture(page, `${info.project.name}-phase5c-scone-detail`);
+  await open(page, '/cakes');
+  await page.getByRole('button', { name: 'All products', exact: true }).click();
+  await capture(page, `${info.project.name}-phase5c-catalogue`);
+  const photos = await page.locator('.catalogue-product img').evaluateAll(images => images.map(i => ({ src: i.currentSrc, complete: i.complete, width: i.naturalWidth })));
+  expect(photos).toHaveLength(12);
+  expect(photos.every(i => i.complete && i.width > 0 && i.src.includes('/images/catalogue/') && !i.src.includes('illustration'))).toBeTruthy();
+  for (const route of ['/cakes', '/cakes/fudge-brownies', '/cakes/plain-scones']) {
+    await open(page, route); await page.addScriptTag({ content: axe.source });
+    const violations = await page.evaluate(async () => (await window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] } })).violations);
+    expect(violations).toEqual([]);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+  }
+});
+
+test('product enquiry snapshot and unpublished admin preview survive catalogue updates', async ({ page }, info) => {
+  await open(page, '/cakes/plain-scones');
+  await page.getByRole('combobox', { name: 'Quantity', exact: true }).selectOption('10');
+  await page.getByRole('link', { name: /^Request Quote/ }).click();
+  await page.getByLabel('Full name', { exact: true }).fill('Catalogue Test');
+  await page.getByLabel('Email', { exact: true }).fill('catalogue@example.com');
+  await page.getByLabel('South African contact number').fill('0821234567');
+  await page.getByLabel('Requested date').fill('2026-12-20');
+  await page.getByRole('combobox', { name: 'Collection or delivery', exact: true }).selectOption('Delivery');
+  await page.getByLabel('Delivery area').fill('Thatchfield');
+  await page.getByLabel('I understand this enquiry', { exact: false }).check();
+  await page.getByRole('button', { name: 'Review Request', exact: true }).click();
+  await expect(page.locator('.catalogue-enquiry-summary')).toContainText('550');
+  await page.getByRole('button', { name: 'Save Local Request', exact: true }).click();
+  await expect(page).toHaveURL(/\/product-enquiries\//);
+  const savedURL = page.url();
+  await page.reload(); await expect(page.getByRole('heading', { name: 'Your local product enquiry' })).toBeVisible();
+  await expect(page.locator('.catalogue-enquiry-summary')).toContainText('550');
+  await capture(page, `${info.project.name}-phase5c-product-enquiry`);
+  await open(page, '/admin/products');
+  await page.getByLabel('Search products', { exact: true }).fill('Plain Scones');
+  await page.getByRole('button', { name: 'Edit', exact: true }).click();
+  await page.getByRole('heading', { name: 'Edit product', exact: true }).waitFor();
+  await page.getByRole('textbox', { name: 'Description', exact: true }).fill('Updated catalogue description');
+  await page.getByRole('textbox', { name: /^Product photograph/ }).fill('/images/catalogue/plain-scones.webp?review=1');
+  await page.getByLabel('Quantity options', { exact: false }).fill('5:300\n10:650\n20:980');
+  await page.getByRole('button', { name: 'Preview product', exact: true }).click();
+  await expect(page.getByRole('region', { name: 'Product publication preview' })).toContainText('650');
+  const other = await page.context().newPage(); await open(other, '/cakes/plain-scones');
+  await other.getByRole('combobox', { name: 'Quantity', exact: true }).selectOption('10'); await expect(other.locator('.detail-price')).toContainText('550');
+  await other.close();
+  await page.getByRole('button', { name: 'Publish product locally', exact: true }).click();
+  await expect(page.getByRole('status')).toContainText('Product saved');
+  await page.reload(); await page.getByLabel('Search products', { exact: true }).fill('Plain Scones');
+  await expect(page.locator('.admin-product')).toContainText('Updated catalogue description');
+  await open(page, '/cakes/plain-scones'); await page.getByRole('combobox', { name: 'Quantity', exact: true }).selectOption('10'); await expect(page.locator('.detail-price')).toContainText('650');
+  await page.goto(savedURL); await expect(page.locator('.catalogue-enquiry-summary')).toContainText('550');
+  await open(page, '/admin/quotations'); await expect(page.getByRole('heading', { name: 'Bakery product enquiries' })).toBeVisible(); await expect(page.locator('.admin-table').first()).toContainText('Catalogue Test');
+  await capture(page, `${info.project.name}-phase5c-admin-product-enquiries`);
+});

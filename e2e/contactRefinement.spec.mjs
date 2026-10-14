@@ -1,0 +1,51 @@
+import { test, expect } from '@playwright/test';
+import axe from 'axe-core';
+import { open, capture } from './helpers.mjs';
+
+const address = 'Thatchfield Crescent Estate, Thatchfield, The Reeds, Centurion, 0158, South Africa';
+test('estate map, relocated contacts, responsive layout and preserved enquiry saving', async ({page}, info) => {
+  const errors=[];
+  page.on('pageerror', error=>errors.push(error.message));
+  page.on('console', message=>{if(message.type()==='error')errors.push(message.text());});
+  await page.addInitScript(()=>localStorage.setItem('floating:enquiries',JSON.stringify([{id:'prior-contact',name:'Existing Customer',email:'existing@example.com',telephone:'0731268382',type:'General enquiry',message:'Keep this enquiry.',createdAt:'2026-10-13T12:00:00Z',demo:true}])));
+  await open(page,'/contact');
+  await expect(page.getByText('A note about this preview',{exact:true})).toHaveCount(0);
+  await expect(page.locator('.contact-note')).toHaveCount(0);
+  await expect(page.locator('.contact > div .contact-item')).toHaveCount(0);
+  const map=page.locator('.contact > div iframe');
+  await expect(map).toHaveAttribute('title',/Thatchfield Crescent Estate/);
+  await expect(map).toHaveAttribute('loading','lazy');
+  expect(new URL(await map.getAttribute('src')).searchParams.get('q')).toBe(address);
+  const details=page.locator('.contact-details');
+  await expect(details.getByRole('heading',{name:"We'd Love to Hear From You"})).toBeVisible();
+  expect(await details.evaluate(el=>el.previousElementSibling.classList.contains('contact'))).toBe(true);
+  for(const link of await page.getByRole('link',{name:'Get Directions',exact:true}).all()) expect(new URL(await link.getAttribute('href')).searchParams.get('destination')).toBe(address);
+  await expect(details.locator('a[href^="tel:"]')).toHaveAttribute('href','tel:+27731268382');
+  await expect(details.locator('a[href^="mailto:"]')).toHaveAttribute('href','mailto:guguminnaar@gmail.com');
+  const width=info.project.use.viewport.width;
+  expect(await page.locator('.contact-items').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(width>800?3:1);
+  const mapBox=await map.boundingBox(); const formBox=await page.locator('.contact form').boundingBox();
+  if(width>800){expect(mapBox.x+mapBox.width).toBeLessThanOrEqual(formBox.x);expect(mapBox.height).toBeGreaterThanOrEqual(350);expect(mapBox.height).toBeLessThanOrEqual(420);}
+  else{expect(mapBox.y+mapBox.height).toBeLessThan(formBox.y);expect(mapBox.height).toBeGreaterThanOrEqual(280);expect(mapBox.height).toBeLessThanOrEqual(340);}
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+  await page.locator('.contact form').evaluate(form=>form.requestSubmit());
+  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('floating:enquiries')).length)).toBe(1);
+  await page.getByLabel('Your name',{exact:true}).fill('Contact Refinement Test');
+  await page.getByLabel('Email address',{exact:true}).fill('refinement@example.com');
+  await page.getByLabel('Your message',{exact:true}).fill('An estate enquiry for a celebration.');
+  await page.getByRole('checkbox').check();
+  await page.getByLabel('Telephone',{exact:true}).fill('abcdefgh');
+  expect(await page.getByLabel('Telephone',{exact:true}).evaluate(input=>input.validity.patternMismatch)).toBe(true);
+  await page.locator('.contact form').evaluate(form=>form.requestSubmit());
+  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('floating:enquiries')).length)).toBe(1);
+  await page.getByLabel('Telephone',{exact:true}).fill('0731268382');
+  await page.addScriptTag({content:axe.source});
+  expect(await page.evaluate(async()=>(await window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}})).violations.map(v=>v.id))).toEqual([]);
+  await capture(page,`${info.project.name}-contact-refinement`);
+  await page.locator('.contact form').evaluate(form=>{form.requestSubmit();form.requestSubmit();});
+  await expect(page.getByRole('heading',{name:'Your idea is saved.'})).toBeVisible();
+  await expect(page.getByText('The bakery has not received it.',{exact:false})).toBeVisible();
+  const enquiries=await page.evaluate(()=>JSON.parse(localStorage.getItem('floating:enquiries')));
+  expect(enquiries).toHaveLength(2);expect(enquiries[0].id).toBe('prior-contact');expect(enquiries[0].message).toBe('Keep this enquiry.');
+  expect(errors).toEqual([]);
+});

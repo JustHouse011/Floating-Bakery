@@ -1,0 +1,4 @@
+import {chromium} from '@playwright/test';
+import {mkdir,writeFile} from 'node:fs/promises';
+const browser=await chromium.launch({channel:'chrome'});const page=await browser.newPage();await mkdir('qa/evidence/reference',{recursive:true});
+try{const response=await page.goto('https://websitedemos.net/cake-shop-04/?customize=template',{timeout:15000,waitUntil:'domcontentloaded'});const result={status:response.status(),title:await page.title(),url:page.url()};await page.screenshot({path:'qa/evidence/reference/cake-shop.png'});await writeFile('qa/evidence/reference/result.json',JSON.stringify(result,null,2));console.log(result);}catch(error){await writeFile('qa/evidence/reference/result.json',JSON.stringify({error:error.message},null,2));console.log('Reference unavailable: '+error.message);}finally{await browser.close();}

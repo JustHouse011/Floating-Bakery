@@ -1,0 +1,25 @@
+import { test, expect } from '@playwright/test';
+import { open, capture } from './helpers.mjs';
+test('official cake cover, categories, gallery, feature order and visibility persist without reseeding', async ({ page }, info) => {
+  await open(page, '/admin/products');
+  await page.getByRole('searchbox', { name: 'Search products', exact: true }).fill('Emerald Rose');
+  await page.getByRole('button', { name: 'Edit', exact: true }).click();
+  await page.getByRole('textbox', { name: 'Description', exact: true }).fill('Owner-reviewed emerald rose design reference.');
+  await page.getByRole('combobox', { name: /^Product photograph/ }).fill('/images/catalogue/IMG-20261013-WA0008.jpg');
+  await page.getByRole('textbox', { name: 'Gallery photograph paths (one per line)', exact: true }).fill('/images/cakes/client/emerald-rose-celebration-cake-0008-detail.webp');
+  await page.getByRole('textbox', { name: 'Secondary categories (one per line)', exact: true }).fill('Floral Cakes\nLuxury Cakes');
+  await page.getByRole('spinbutton', { name: 'Featured order', exact: true }).fill('0');
+  await page.getByRole('checkbox', { name: 'Featured on the home page', exact: true }).check();
+  await page.getByRole('button', { name: 'Preview product', exact: true }).click();
+  await expect(page.getByRole('region', { name: 'Product publication preview' })).toContainText('Owner-reviewed');
+  await page.getByRole('button', { name: 'Publish product locally', exact: true }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Product saved' })).toBeVisible();
+  await page.reload(); await page.getByRole('searchbox', { name: 'Search products', exact: true }).fill('Emerald Rose');
+  await expect(page.locator('.admin-product')).toContainText('Owner-reviewed');
+  await open(page, '/cakes/cake-wa-0008'); await expect(page.locator('.official-cake-detail')).toContainText('Owner-reviewed');
+  await expect(page.locator('.official-cake-detail > div > img')).toHaveAttribute('src', /WA0008.jpg/); await expect(page.locator('.official-cake-detail > div > img')).not.toHaveAttribute('srcset');
+  await expect(page.locator('.cake-gallery button')).toHaveCount(2);
+  await capture(page, `${info.project.name}-phase6-edited-cake`);
+  await open(page, '/admin/products'); await page.getByRole('searchbox', { name: 'Search products', exact: true }).fill('Emerald Rose'); await page.getByRole('button', { name: 'Edit', exact: true }).click(); await page.getByRole('checkbox', { name: 'Visible in public catalogue', exact: true }).uncheck(); await page.getByRole('button', { name: 'Preview product', exact: true }).click(); await page.getByRole('button', { name: 'Publish product locally', exact: true }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Product saved' })).toBeVisible(); await open(page, '/cakes'); await expect(page.getByRole('link', { name: 'Emerald Rose Celebration Cake', exact: true })).toHaveCount(0);
+});

@@ -1,0 +1,140 @@
+{
+  "originalSHA256": {
+    "image(20261013-125810).png": "63b8e1f28acc2072e3419334a446eb9dc90fb0bfb5710a7d9e59c0ca3601b0c1",
+    "image(20261013-125821).png": "13fa131a33dacf030b50a5d61d5613cfb6ef455ba1ff5539228b6ff39894177c"
+  },
+  "crops": [
+    {
+      "name": "fudge-brownies",
+      "source": "image(20261013-125810).png",
+      "x": 42,
+      "y": 346,
+      "width": 311,
+      "height": 225,
+      "bytes": 15822,
+      "sourceWidth": 1079,
+      "sourceHeight": 1576
+    },
+    {
+      "name": "chocolate-chip-cookies",
+      "source": "image(20261013-125810).png",
+      "x": 386,
+      "y": 346,
+      "width": 311,
+      "height": 225,
+      "bytes": 16876,
+      "sourceWidth": 1079,
+      "sourceHeight": 1576
+    },
+    {
+      "name": "chocolate-cheesecake-brownies",
+      "source": "image(20261013-125810).png",
+      "x": 729,
+      "y": 346,
+      "width": 311,
+      "height": 220,
+      "bytes": 16592,
+      "sourceWidth": 1079,
+      "sourceHeight": 1576
+    },
+    {
+      "name": "chocolate-eclairs",
+      "source": "image(20261013-125810).png",
+      "x": 42,
+      "y": 710,
+      "width": 311,
+      "height": 209,
+      "bytes": 12944,
+      "sourceWidth": 1079,
+      "sourceHeight": 1576
+    },
+    {
+      "name": "cream-puffs",
+      "source": "image(20261013-125810).png",
+      "x": 386,
+      "y": 710,
+      "width": 311,
+      "height": 209,
+      "bytes": 13496,
+      "sourceWidth": 1079,
+      "sourceHeight": 1576
+    },
+    {
+      "name": "profiteroles",
+      "source": "image(20261013-125810).png",
+      "x": 729,
+      "y": 710,
+      "width": 311,
+      "height": 209,
+      "bytes": 12498,
+      "sourceWidth": 1079,
+      "sourceHeight": 1576
+    },
+    {
+      "name": "chouquettes",
+      "source": "image(20261013-125810).png",
+      "x": 42,
+      "y": 1051,
+      "width": 311,
+      "height": 183,
+      "bytes": 15018,
+      "sourceWidth": 1079,
+      "sourceHeight": 1576
+    },
+    {
+      "name": "palmiers",
+      "source": "image(20261013-125810).png",
+      "x": 386,
+      "y": 1051,
+      "width": 311,
+      "height": 183,
+      "bytes": 12932,
+      "sourceWidth": 1079,
+      "sourceHeight": 1576
+    },
+    {
+      "name": "madeleines",
+      "source": "image(20261013-125810).png",
+      "x": 729,
+      "y": 1051,
+      "width": 311,
+      "height": 183,
+      "bytes": 9546,
+      "sourceWidth": 1079,
+      "sourceHeight": 1576
+    },
+    {
+      "name": "plain-scones",
+      "source": "image(20261013-125821).png",
+      "x": 8,
+      "y": 462,
+      "width": 412,
+      "height": 483,
+      "bytes": 35290,
+      "sourceWidth": 1062,
+      "sourceHeight": 1600
+    },
+    {
+      "name": "chocolate-chip-scones",
+      "source": "image(20261013-125821).png",
+      "x": 8,
+      "y": 991,
+      "width": 412,
+      "height": 391,
+      "bytes": 36342,
+      "sourceWidth": 1062,
+      "sourceHeight": 1600
+    },
+    {
+      "name": "official-logo",
+      "source": "image(20261013-125810).png",
+      "x": 38,
+      "y": 0,
+      "width": 287,
+      "height": 266,
+      "bytes": 8942,
+      "sourceWidth": 1079,
+      "sourceHeight": 1576
+    }
+  ]
+}

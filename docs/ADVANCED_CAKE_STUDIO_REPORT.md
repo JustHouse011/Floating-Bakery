@@ -1,0 +1,68 @@
+# Advanced Cake Design Studio — local implementation review
+
+Review locally at http://127.0.0.1:5173/cake-designer?product=cake-wa-0008. No deployment, push, backend, official photograph replacement or owner data reset.
+
+## Catalogue audit and mapping
+
+[Per-product feature audit](CAKE_DESIGN_FEATURE_AUDIT.md) records all 43 products and 44 original photographs. The inspected contact sheets are `qa/evidence/phase6/contact-{0,12,24,36}.jpg`. WA0014 and WA0020 remain the primary and alternate view of one product. Names, catalogue records, photographs, galleries and approved pricing data are retained.
+
+`src/data/cakeTemplates.ts` independently maps all 43 product IDs to structured templates. It records the visible palette, nearest supported structure, material, decoration families and photograph-only details. It includes square/rectangular approximations, tall cylinders, three-tier ivory florals and four-tier pink floral cascades. Dimensions are conceptual starting proportions; photographs cannot establish production measurements, serving counts, frosting composition or flower edibility. `scripts/studio-audit.mjs` validates inventory counts and reproduces the matrix.
+
+Product cards and official detail pages offer **Customise This Cake**. Existing product ID, flavour and instructions travel into the studio; the same product resumes an existing configuration. Reset to original template restores supported visual details while retaining the selected flavour and design instructions. Duplicate design clones the current working design, retains its catalogue/photo context and detaches the template marker; the manually saved copy is not overwritten until Save is used.
+
+## Implemented studio features
+
+- Seven expandable tool sections: Start from a Design, Cake Structure, Frosting & Textures, Flowers, Decorations, Colours and Personalisation, with retained bakery-review controls.
+- Round, square and rectangular structures; one through four tiers; individual width/depth/height, taper and horizontal offset; visible board, board colour and matte/gold/silver finish. Upper tiers must fit their support. Round/square depth is normalised to width. Four tiers require bakery confirmation.
+- Fourteen visible procedural surface options: smooth buttercream/fondant, textured/rustic frosting, vertical ridges, horizontal grooves, pleated, ruffled, quilted/embossed, ombré, marble, watercolour and metallic accents. Surface options use colour and bump textures with physically based materials. Pleating, ruffles and embossed details are texture approximations rather than bespoke sculpted sugar work.
+- Reusable curved rose petals with instancing; small blossoms and leaves; top/side/cascade arrangements; individual flowers through density one; group colours, density, rotation and scale.
+- Pearls, perimeter beaded borders, metallic flecks, chocolate/ganache-style drips, wrap ribbons, procedural bows, generic toppers, plaques, text/number personalisation and geometric ornaments. Print reference markers identify placements without fabricating character artwork.
+- Raycast selection in the preview and accessible selection lists; selected-group indicators; supported tier/region attachments; rotation, bounded scale, duplication and removal. Perimeter details wrap the selected tier and expose only applicable controls. Top decorations attach to the exposed top tier. Placement clearance limits crowding; a region accepts at most four ordinary groups, and the design at most 24 groups. Changing structure reattaches supported decorations or reports an invalid combination without replacing the design.
+- Per-tier custom colours, catalogue-inspired palette presets, coordinated group colours, gold/silver metallic accents and material preview thumbnails. Customer cakes are not restricted to the website brand palette.
+- Recipient name, age/anniversary number and short celebration text on a scene plaque; event and preferred colour scheme retained as design instructions. Long instructions remain quotation data.
+- Orbit/zoom, reset, front/side/top views, fullscreen and white/warm/cool studio backgrounds. Colour/finish edits retain the current camera view; framing changes with structure.
+- **Original Design | Your Customisation** compares the retained official photograph beside the preview. Explicit fidelity categories describe supported elements, approximate visual representation and bakery confirmation requirements. No numerical accuracy score.
+- Desktop three-region layout; mobile expandable panels plus native tools/summary bottom-sheet dialogs, Escape dismissal and focus return. White background and restrained existing UI accents retained.
+- Summary actions for Save Design, Reset Design and Request a Quote, with existing toolbar save/restore/copy actions retained. Undo/redo holds up to 50 edits and clears redo after a new edit.
+
+## Rendering and resource changes
+
+The heavy Three.js preview remains lazy-loaded. Rounded round-tier profiles with height-based texture coordinates, tapered geometry, rounded square/rectangular forms, PBR roughness/metalness, procedural colour/bump maps, soft studio lights and contact shadows produce actual scene changes. Taller initial proportions follow the tall references. Roses share curved petal geometry with layered tones and instance repeated petals; borders and drips use instanced details. Ribbon geometry follows round, square and rectangular tapered surfaces. Side attachments use the surface radius at their actual height. Texture ownership is explicit and disposal follows replacement/unmount. The renderer uses demand-driven frames and low mobile pixel density; contact shadows follow edits. No third-party model downloads or unverified licences were introduced.
+
+The existing WebGL availability check, lazy-loading boundary and context-loss fallback remain usable: customers can still configure, save and request a quotation when 3D is unavailable. Reduced motion avoids orbit damping and existing application effects honour reduced-motion preferences. Saved quotations provide lazy, read-only 3D inspection without restoring their configuration into the editable store.
+
+## Save, pricing and quotation compatibility
+
+The manual save envelope is version 3. Versions 1 and 2 continue to restore without rewriting them; the optional `configuration.studio` extension has its own version 1. Older configurations without this extension continue to use the established scene, pricing and schema. Session saving preserves the extension. Storage failures leave the current configuration intact and offer existing recovery actions. Unsaved customer form drafts still live in memory; the previously established session-design persistence does not make customer forms durable across closed tabs.
+
+New snapshots retain the studio's template/catalogue reference, structure, individual dimensions, taper/offset, materials, colours, board, decorative groups and their tier/region/rotation/scale, personalisation, instructions and reference-only details. Constrained positions are reconstructed from that saved structure and attachment data. The existing official snapshot retains the original photograph, flavour, approved price range/version and final-price disclaimer. Snapshot copies remain deeply frozen; inspection and subsequent edits do not alter them. The IndexedDB schema and historical records are not rewritten.
+
+Phase 6's **R1,480–R1,950** base range and single selected-flavour surcharge remain unchanged. No new automatic flower, topper, texture, structure or decoration charges are introduced. Official ranges continue to require bakery confirmation. Advanced designs using legacy demonstration pricing are explicitly flagged for manual confirmation; their established baseline remains only an indicative partial amount. The existing controlled admin pricing/confirmation workflow remains the only confirmation system.
+
+The shared quotation summary now shows the advanced details and reference-only requirements for customers and bakery staff. Staff can inspect the frozen 3D design and use the existing approval/history workflow. No separate administration system was added.
+
+## Files and components
+
+New: `src/types/studio.ts`, `src/data/cakeTemplates.ts`, `src/services/studioDesign.ts`, `src/components/designer/{AdvancedStudioControls,MetallicAccents,StudioPanel,StudioConfigurationSummary}.tsx`, `src/three/CakeModel/StudioCake.tsx`, `src/three/Decorations/{StudioOrnaments.tsx,roseGeometry.ts,ribbonGeometry.ts}`, `src/three/Materials/studioTexture.ts`, `src/three/CakeScene/SavedStudioPreview.tsx`, `src/styles/advanced-studio.css`, audit generator, studio unit/browser tests and these review documents.
+
+Updated: CakeConfiguration, configuration validation/product presets/text summaries, save-envelope migration, designer state/history, CakeDesigner, DesignerControls/Viewport/Summary, CakeModel/CakeScene, shared QuotationSummary, official detail/product-card action wording and test runners. Existing browser helpers now wait for a created Fiber root and inspect the actual loaded Vite store module rather than accidentally importing a second development singleton.
+
+## Validation
+
+Strict TypeScript, ESLint, all **233 unit/integration tests** and production build pass. Existing test assertions remain; save-version expectations were updated to version 3, and the summary render fixture now supplies its required router. Eight new unit cases cover all templates, support constraints, attachments including actual-height taper calculations, old-version restore, deep copies, undo/redo/reset/duplicate, fixed official flavour ranges and frozen quotation snapshots.
+
+The broad browser suite passed **all 60 cases (14.3 minutes)** across six responsive viewports (1920, 1440, 1024, 768, 390 and 360 pixels) and desktop/mobile journeys. Evidence: `.tools/studio-browser-reviewed.log` and `qa/evidence/playwright-results-advanced-studio-reviewed.json`. It exercises actual raycast selection, constrained structure controls, duplication/removal, keyboard scaling, native mobile dialogs, all 43 templates/44 photographs, visible finishes, responsive public/admin routes, WCAG checks, existing quotation/price confirmation workflows, storage failure, reset/restore and WebGL context loss.
+
+Following the visual refinements, **all 16 affected rendering/catalogue/CTA/quotation cases passed (2.9 minutes)**: `.tools/studio-browser-render-final.log` and `qa/evidence/playwright-results-advanced-studio-render-final.json`. **All eight final studio cases passed (1.7 minutes)** after the rounded-tier texture-coordinate correction; evidence is `.tools/studio-browser-surface-final.log` and `qa/evidence/playwright-results-advanced-studio-surface-final.json`. Two final desktop/mobile structure and raycast checks also passed (26 seconds), including verification that Gold/Silver board choices change the actual material colour: `.tools/studio-browser-board-final.log` and `qa/evidence/playwright-results-advanced-studio-board-final.json`. These are repeat validations of cases in the 60-case suite, not additional unique tests. Final typechecking, lint, all 233 tests and build were rerun successfully after the last UI changes.
+
+Automated logs: `.tools/studio-{typecheck,lint,tests,build}.log`. Browser screenshots include `qa/evidence/final/journey-{desktop,mobile}-advanced-studio.png` and `journey-{desktop,mobile}-advanced-studio-admin.png`. Earlier diagnostic failures are retained: some were caused by live source edits during a browser pass, ambiguous accessible labels, a missing router in a rendering fixture, and premature Fiber-root or incorrect Vite singleton inspection. Actual accessibility issues found in the new labelled viewport were corrected.
+
+The build retains Vite's large-chunk advisory; thresholds were not raised. The shared lazy renderer remains about 903 KB (244 KB gzip), with a separate small saved-preview entry. The main bundle is about 522 KB (165 KB gzip). `qa/evidence/final/advanced-studio-render-metrics.json` records all 43 templates at 1440 and 390 pixels on the local Intel UHD GPU; maxima after layered-rose refinement were 57 draw calls, 32,006 triangles, 10 textures and 22 geometries. Final close-up images are `studio-emerald-{1440,390}.png`. Browser tests use desktop Chrome and touch-emulated mobile viewports, not physical mid-range phones, Safari or a full screen-reader session. No claim of a measured physical-device frame rate is made.
+
+## Approximate / unsupported features and bakery confirmations
+
+The audit lists specific per-product limitations. Geode openings/crystals, sculpted characters, cosmetics and branded replicas, castles, handbags, cupcake silhouettes, realistic berries/chocolate pieces, pampas grass, exact lace butterflies, complex crown jewellery, delicate sails/fans, proprietary printed artwork and fine handwritten script remain photograph-only or generic-marker approximations. Procedural flowers do not claim to match every photographed botanical species, and texture-based finishes do not claim exact handmade reproduction. Mixed round/book or sculpted-tier structures use the nearest supported uniform-shape approximation.
+
+Outstanding bakery decisions: actual dimensions/servings; viable tier support including four tiers and offsets; finish/material choice; decorative flower suitability and edibility; specific artwork/topper procurement; reference-only sculpting; availability and delivery; and final base/additional amounts through the existing controlled pricing process. No unapproved price rules or accuracy percentages were invented.
+
+Implementation remains local and stops for review after validation.

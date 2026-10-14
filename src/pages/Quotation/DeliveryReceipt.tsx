@@ -1,0 +1,3 @@
+import {useLocation,Link} from 'react-router-dom';
+import {DELIVERY_SUCCESS} from '../../services/onlineEnquiries';
+export default function DeliveryReceipt(){const {state}=useLocation();return <section className="section page-heading"><h1>Your enquiry</h1>{state?.accepted===true?<><p role="status">{DELIVERY_SUCCESS}</p><p>Reference: {state.reference}</p><p>Your event, availability and final price still require bakery confirmation.</p></>:<p>No submission confirmation is available. Please contact the bakery if you need help with an enquiry.</p>}<Link className="text-link" to="/cakes">Return to the collection</Link></section>;}
