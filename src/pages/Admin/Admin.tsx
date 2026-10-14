@@ -24,6 +24,7 @@ import "../../styles/quotation.css";
 import "../../styles/admin.css";
 import { useDrawerFocus } from "../../hooks/useDrawerFocus";
 import { RecordsContext } from "./RecordsContext";
+import {IS_ADMIN_PREVIEW} from '../../config/siteMode';
 const links = [
   ["", "Overview", LayoutDashboard],
   ["products", "Products", Package],
@@ -133,8 +134,7 @@ export default function Admin() {
           <div className="admin-sidebar-bottom">
             <span className="admin-demo-dot" /> Local demonstration
             <p>
-              This workspace has no authentication. Anyone using this browser
-              can access its records.
+              {IS_ADMIN_PREVIEW ? 'Preview access is protected by Vercel sign-in. Mock changes stay in this browser and do not update the live website. Intended admin: bnombamba@icloud.com.' : 'This workspace has no authentication. Anyone using this browser can access its records.'}
             </p>
             <Link to="/">
               View bakery website <ArrowUpRight size={15} />

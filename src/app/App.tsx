@@ -6,7 +6,7 @@ import { Cakes, CakeDetail } from "../pages/Cakes";
 import { Catering } from "../pages/Info";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
-import {IS_PUBLIC_SITE} from '../config/siteMode';
+import {IS_PUBLIC_SITE,IS_ADMIN_PREVIEW} from '../config/siteMode';
 import DeliveryReceipt from '../pages/Quotation/DeliveryReceipt';
 import Unavailable from '../pages/Unavailable';
 import PageMetadata from '../components/layout/PageMetadata';
@@ -72,7 +72,7 @@ export default function App() {
         <Route
           path="admin/*"
           element={
-            IS_PUBLIC_SITE ? <Unavailable/> : <Suspense
+            IS_PUBLIC_SITE && !IS_ADMIN_PREVIEW ? <Unavailable/> : <Suspense
               fallback={
                 <main className="section" role="status">
                   Loading administration…
