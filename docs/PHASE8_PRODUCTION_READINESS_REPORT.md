@@ -40,7 +40,7 @@ The lazy-loaded Three.js studio still produces a build warning for its approxima
 
 ## GitHub and deployment status
 
-Confirmed repository: `https://github.com/JustHouse011/Floating-Bakery`, default branch `main`, public and initially empty. The workspace initially had no `.git`; initialized local `main` against that exact origin. No remote history was overwritten. Local commit and push result are reported with the handoff.
+Confirmed repository: `https://github.com/JustHouse011/Floating-Bakery`, default branch `main`, public and initially empty. The workspace initially had no `.git`; initialized local `main` against that exact origin. Implementation commit: `029b125` (`feat: prepare Floating Bakery website for production`). A normal `git push --set-upstream origin main` failed because repository authentication is unavailable. The remote remains empty; no history was overwritten. This report is recorded in a follow-up documentation commit.
 
 Vercel CLI 64.0.2 reported **No existing credentials found**. The authenticated Preview attempt did not create a deployment. An explicit temporary Preview attempt was rejected because anonymous deployments always target production; no production fallback was performed. **Preview URL: unavailable until Vercel is authenticated.**
 
